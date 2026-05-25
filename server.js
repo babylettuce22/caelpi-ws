@@ -3,7 +3,7 @@ const WebSocket = require("ws");
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("WebSocket server is running. Connect via wss://ws.babylettuce.net");
+  res.end("WebSocket server is running, v2. Connect via wss://ws.babylettuce.net");
 });
 
 const wss = new WebSocket.Server({ server });
