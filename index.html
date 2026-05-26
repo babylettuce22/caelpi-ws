@@ -42,6 +42,20 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     }
     .search-bar input::placeholder { color: rgba(255, 255, 255, 0.4); }
+    .search-bar select {
+      background: none;
+      border: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      padding: 0 14px;
+      cursor: pointer;
+      outline: none;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .search-bar select option { background: #1a1a2e; color: #fff; }
 
     /* Right side panel */
     .side-panel {
@@ -194,8 +208,13 @@
 </head>
 <body>
   <div class="search-bar">
-    <form action="https://www.google.com/search" method="GET">
-      <input type="text" name="q" placeholder="Search Google..." autocomplete="off" autofocus>
+    <form id="searchForm" action="https://www.google.com/search" method="GET">
+      <input type="text" id="searchInput" name="q" placeholder="Search Google..." autocomplete="off" autofocus>
+      <select id="searchEngine">
+        <option value="google">Google</option>
+        <option value="bing">Bing</option>
+        <option value="yandex">Yandex</option>
+      </select>
     </form>
   </div>
 
@@ -222,6 +241,32 @@
   <img class="bg" src="/happy.gif" alt="">
 
   <script>
+    var engines = {
+      google: { action: "https://www.google.com/search", param: "q", name: "Google" },
+      bing: { action: "https://www.bing.com/search", param: "q", name: "Bing" },
+      yandex: { action: "https://yandex.com/search/", param: "text", name: "Yandex" }
+    };
+
+    var searchSelect = document.getElementById("searchEngine");
+    var searchForm = document.getElementById("searchForm");
+    var searchInput = document.getElementById("searchInput");
+
+    var saved = localStorage.getItem("searchEngine");
+    if (saved && engines[saved]) searchSelect.value = saved;
+    setEngine(searchSelect.value);
+
+    searchSelect.addEventListener("change", function() {
+      setEngine(this.value);
+      localStorage.setItem("searchEngine", this.value);
+    });
+
+    function setEngine(key) {
+      var e = engines[key];
+      searchForm.action = e.action;
+      searchInput.name = e.param;
+      searchInput.placeholder = "Search " + e.name + "...";
+    }
+
     function updateClock() {
       var now = new Date();
       document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
