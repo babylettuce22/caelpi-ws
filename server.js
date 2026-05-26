@@ -90,6 +90,7 @@ function httpsGet(url, headers) {
       });
     });
     req.on("error", reject);
+    req.end();
   });
 }
 
