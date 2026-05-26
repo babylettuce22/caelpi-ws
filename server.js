@@ -1,7 +1,42 @@
 const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const WebSocket = require("ws");
+
+// Weather cache
+let weatherCache = { data: null, fetchedAt: 0 };
+const WEATHER_ZIP = "95817";
+const WEATHER_TTL = 30 * 60 * 1000; // 30 minutes
+
+function fetchWeather() {
+  return new Promise((resolve, reject) => {
+    https.get(`https://wttr.in/${WEATHER_ZIP}?format=j1`, (res) => {
+      let body = "";
+      res.on("data", (chunk) => (body += chunk));
+      res.on("end", () => {
+        try {
+          const data = JSON.parse(body);
+          const current = data.current_condition[0];
+          const result = {
+            temp_f: current.temp_F,
+            feels_like_f: current.FeelsLikeF,
+            desc: current.weatherDesc[0].value,
+            humidity: current.humidity,
+            wind_mph: current.windspeedMiles,
+          };
+          weatherCache = { data: result, fetchedAt: Date.now() };
+          resolve(result);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }).on("error", reject);
+  });
+}
+
+// Fetch on startup
+fetchWeather().catch(() => {});
 
 const homepage = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
 const DATA_FILE = path.join(__dirname, "data.json");
@@ -137,6 +172,19 @@ async function handleApi(req, res, wss) {
 
   if (pathname === "/api/sync" && method === "GET") {
     return json(res, store);
+  }
+
+  if (pathname === "/api/weather" && method === "GET") {
+    try {
+      if (weatherCache.data && Date.now() - weatherCache.fetchedAt < WEATHER_TTL) {
+        return json(res, weatherCache.data);
+      }
+      const data = await fetchWeather();
+      return json(res, data);
+    } catch {
+      if (weatherCache.data) return json(res, weatherCache.data);
+      return json(res, { error: "Weather unavailable" }, 502);
+    }
   }
 
   return json(res, { error: "Not found" }, 404);
