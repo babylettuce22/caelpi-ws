@@ -290,6 +290,8 @@
     var searchForm = document.getElementById("searchForm");
     var searchInput = document.getElementById("searchInput");
 
+    searchInput.focus();
+
     var saved = localStorage.getItem("searchEngine");
     if (saved && engines[saved]) searchSelect.value = saved;
     setEngine(searchSelect.value);
