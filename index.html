@@ -10,7 +10,7 @@
 
     .search-bar {
       position: fixed;
-      top: 100px;
+      top: 130px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -177,20 +177,30 @@
       letter-spacing: 1px;
     }
     .wotd {
-      margin-top: 6px;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.35);
+      margin-top: 12px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.45);
       font-weight: 400;
-      max-width: 480px;
+      max-width: 520px;
+      line-height: 1.5;
     }
     .wotd-word {
-      color: rgba(255, 255, 255, 0.55);
+      color: rgba(255, 255, 255, 0.85);
       font-style: italic;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: 0.5px;
     }
     .wotd-pos {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.25);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.35);
+      font-style: italic;
+    }
+    .wotd-def {
+      display: block;
+      margin-top: 2px;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 13px;
     }
 
     img.bg {
@@ -235,8 +245,10 @@
       .spotify-info { text-align: center; }
       .top-center { top: 12px; }
       .page-title { font-size: 20px; }
-      .wotd { font-size: 11px; max-width: 300px; margin-left: auto; margin-right: auto; }
-      .search-bar { top: 70px; }
+      .wotd { margin-top: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
+      .wotd-word { font-size: 14px; }
+      .wotd-def { font-size: 11px; }
+      .search-bar { top: 100px; }
       .search-bar input { font-size: 14px; padding: 10px 16px; }
     }
   </style>
@@ -322,8 +334,8 @@
         .then(function(w) {
           if (w.error) return;
           var html = '<span class="wotd-word">' + w.word + '</span>';
-          if (w.partOfSpeech) html += ' <span class="wotd-pos">(' + w.partOfSpeech + ')</span>';
-          if (w.definition) html += ' — ' + w.definition;
+          if (w.partOfSpeech) html += ' <span class="wotd-pos">' + w.partOfSpeech + '</span>';
+          if (w.definition) html += '<span class="wotd-def">' + w.definition + '</span>';
           document.getElementById("wotd").innerHTML = html;
         })
         .catch(function() {});
