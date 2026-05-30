@@ -9,13 +9,7 @@
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 
     .search-bar {
-      position: fixed;
-      top: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      width: 90%;
-      max-width: 560px;
+      width: 100%;
     }
     .search-bar form {
       display: flex;
@@ -161,7 +155,7 @@
     }
     .spotify-hidden { display: none; }
 
-    .top-center {
+    .top-section {
       position: fixed;
       top: 24px;
       left: 50%;
@@ -169,6 +163,8 @@
       z-index: 10;
       text-align: center;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      width: 90%;
+      max-width: 560px;
     }
     .page-title {
       font-size: 28px;
@@ -183,6 +179,8 @@
       font-weight: 400;
       max-width: 520px;
       line-height: 1.5;
+      margin-left: auto;
+      margin-right: auto;
     }
     .wotd-word {
       color: rgba(255, 255, 255, 0.85);
@@ -201,6 +199,9 @@
       margin-top: 2px;
       color: rgba(255, 255, 255, 0.45);
       font-size: 13px;
+    }
+    .top-search {
+      margin-top: 16px;
     }
 
     img.bg {
@@ -243,30 +244,32 @@
       .spotify-track { font-size: 11px; max-width: 100px; }
       .spotify-artist { font-size: 10px; max-width: 100px; }
       .spotify-info { text-align: center; }
-      .top-center { top: 12px; }
+      .top-section { top: 12px; }
       .page-title { font-size: 20px; }
-      .wotd { margin-top: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
+      .wotd { margin-top: 8px; }
       .wotd-word { font-size: 14px; }
       .wotd-def { font-size: 11px; }
-      .search-bar { top: 100px; }
+      .top-search { margin-top: 10px; }
       .search-bar input { font-size: 14px; padding: 10px 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="top-center">
+  <div class="top-section">
     <div class="page-title">Cael's Page</div>
     <div class="wotd" id="wotd"></div>
-  </div>
-  <div class="search-bar">
-    <form id="searchForm" action="https://www.google.com/search" method="GET">
-      <input type="text" id="searchInput" name="q" placeholder="Search Google..." autocomplete="off" autofocus>
-      <select id="searchEngine">
-        <option value="google">Google</option>
-        <option value="bing">Bing</option>
-        <option value="yandex">Yandex</option>
-      </select>
-    </form>
+    <div class="top-search">
+      <div class="search-bar">
+        <form id="searchForm" action="https://www.google.com/search" method="GET">
+          <input type="text" id="searchInput" name="q" placeholder="Search Google..." autocomplete="off" autofocus>
+          <select id="searchEngine">
+            <option value="google">Google</option>
+            <option value="bing">Bing</option>
+            <option value="yandex">Yandex</option>
+          </select>
+        </form>
+      </div>
+    </div>
   </div>
 
   <div class="side-panel">
